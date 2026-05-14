@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Interviewerslot.Models.Student>
+
+@{
+    ViewBag.Title = "Students";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Student List</h2>
+
+    <a href="@Url.Action("Create")"
+       class="btn btn-primary">
+        + Add New Student
+    </a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="3" class="text-muted">
+                            No students found
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var s in Model)
+                    {
+                        <tr>
+                            <td>@s.StudentId</td>
+                            <td>@s.Name</td>
+                            <td>@s.Email</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

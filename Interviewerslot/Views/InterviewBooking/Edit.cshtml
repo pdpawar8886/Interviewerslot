@@ -1,0 +1,137 @@
+﻿@model Interviewerslot.Models.InterviewBooking
+
+@{
+    ViewBag.Title = "Edit Interview Booking";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg rounded-3">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h4 class="mb-0">Edit Interview</h4>
+                </div>
+
+                <div class="card-body">
+
+                    <!--  Error Message -->
+                    @if (ViewBag.ErrorMsg != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.ErrorMsg
+                        </div>
+                    }
+
+                    <!-- ✅ Success Message -->
+                    @if (ViewBag.SuccessMsg != null)
+                    {
+                        <div class="alert alert-success">
+                            @ViewBag.SuccessMsg
+                        </div>
+                    }
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.BookingId)
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <!-- Student -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Student</label>
+                            @Html.DropDownListFor(
+                                m => m.StudentId,
+                                (SelectList)ViewBag.StudentList,
+                                "-- Select Student --",
+                                new { @class = "form-control", required = "required" })
+                        </div>
+
+                        <!-- Sir -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Sir</label>
+                            @Html.DropDownListFor(
+                                m => m.SirId,
+                                (SelectList)ViewBag.SirList,
+                                "-- Select Sir --",
+                                new { @class = "form-control", id = "SirId", required = "required" })
+                        </div>
+
+                        <!-- Slot -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Available Slot</label>
+                            @Html.DropDownListFor(
+                                m => m.AvailabilityId,
+                                new SelectList(Enumerable.Empty<SelectListItem>()),
+                                "-- Select Slot --",
+                                new { @class = "form-control", id = "slotDropdown", required = "required" })
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100 fw-bold">
+                            Update Interview
+                        </button>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    $(document).ready(function () {
+
+        function loadSlots(sirId, selectedSlotId) {
+
+            $("#slotDropdown")
+                .empty()
+                .append('<option value="">-- Select Slot --</option>');
+
+            if (sirId) {
+                $.ajax({
+                    url: '@Url.Action("GetSlotsBySir", "InterviewBooking")',
+                    type: 'GET',
+                    data: { sirId: sirId },
+                    success: function (data) {
+
+                        if (data.length === 0) {
+                            $("#slotDropdown").append(
+                                '<option value="">No slots available</option>');
+                        }
+
+                        $.each(data, function (i, slot) {
+
+                            var selected = (slot.AvailabilityId == selectedSlotId)
+                                ? 'selected'
+                                : '';
+
+                            $("#slotDropdown").append(
+                                '<option value="' + slot.AvailabilityId + '" ' + selected + '>' +
+                                slot.SlotText +
+                                '</option>');
+                        });
+                    }
+                });
+            }
+        }
+
+        // 🔹 Sir change
+        $("#SirId").change(function () {
+            var sirId = $(this).val();
+            loadSlots(sirId, null);
+        });
+
+        // 🔹 Load slots on Edit page load
+        var initialSirId = $("#SirId").val();
+        var initialSlotId = '@Model.AvailabilityId';
+
+        if (initialSirId) {
+            loadSlots(initialSirId, initialSlotId);
+        }
+    });
+    </script>
+}

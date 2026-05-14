@@ -1,0 +1,97 @@
+﻿@model Interviewerslot.ViewModels.SirLoginViewModel
+
+@{
+    ViewBag.Title = "Sir Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Sir Login</title>
+
+    
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-light">
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center" style="min-height:100vh;">
+            <div class="col-md-4">
+
+                <div class="card shadow-lg rounded-4">
+                    <div class="card-header bg-success text-white text-center">
+                        <h4>Sir Login</h4>
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <!-- ALL VALIDATION ERRORS HERE -->
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger text-center" })
+
+                        @using (Html.BeginForm("Login", "Sir", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <!-- EMAIL -->
+                            <div class="mb-3">
+                                @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+                                @Html.TextBoxFor(
+                                    m => m.Email,
+                                    new
+                                    {
+                                        @class = "form-control",
+                                        placeholder = "Enter email"
+                                    })
+                                @Html.ValidationMessageFor(
+                                    m => m.Email,
+                                    "",
+                                    new { @class = "text-danger" })
+                            </div>
+
+                            <!-- PASSWORD -->
+                            <div class="mb-3">
+                                @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+                                @Html.PasswordFor(
+                                    m => m.Password,
+                                    new
+                                    {
+                                        @class = "form-control",
+                                        placeholder = "Enter password"
+                                    })
+                                @Html.ValidationMessageFor(
+                                    m => m.Password,
+                                    "",
+                                    new { @class = "text-danger" })
+                            </div>
+
+                            <button type="submit" class="btn btn-success w-100">
+                                Login
+                            </button>
+                        }
+
+
+                        <div class="card-footer text-center bg-white">
+                            <small>
+                                Don’t have an account?
+                                <a href="@Url.Action("Register", "Sir")">Register</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--  REQUIRED FOR CLIENT SIDE VALIDATION -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
+</body>
+</html>

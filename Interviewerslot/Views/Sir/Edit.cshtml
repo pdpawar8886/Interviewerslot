@@ -1,0 +1,47 @@
+﻿@model Interviewerslot.Models.SirAvailability
+
+<h3>Edit Slot</h3>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(x => x.AvailabilityId)
+
+    <div class="form-group">
+        @Html.Label("Sir")
+        @Html.DropDownListFor(x => x.SirId,
+            ViewBag.SirList as SelectList,
+            "-- Select Sir --",
+            new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.AvailableDate)
+        @Html.TextBoxFor(x => x.AvailableDate,
+            "{0:yyyy-MM-dd}",
+            new { type = "date", @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.FromTime)
+        @Html.TextBoxFor(x => x.FromTime,
+            new { type = "time", @class = "form-control" })
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.ToTime)
+        @Html.TextBoxFor(x => x.ToTime,
+            new { type = "time", @class = "form-control" })
+    </div>
+
+
+
+    <div class="form-check mt-2">
+        @Html.CheckBoxFor(x => x.IsBooked)
+        @Html.Label("Booked")
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">
+        Update
+    </button>
+}

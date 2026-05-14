@@ -1,0 +1,57 @@
+﻿@model Interviewerslot.ViewModels.AdminLoginViewModel
+@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+<p>
+    <strong>Welcome, @Session["AdminName"]!</strong> |
+    <a href="@Url.Action("Logout", "Admin")">Logout</a>
+</p>
+
+<hr />
+
+<h3>Students List</h3>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>@student.Name</td>
+                <td>@student.Email</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Sirs List</h3>
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sir in Model.Sirs)
+        {
+            <tr>
+                <td>@sir.SirId</td>
+                <td>@sir.SirName</td>
+                <td>@sir.Email</td>
+                <td>@sir.Phone</td>
+            </tr>
+        }
+    </tbody>
+</table>

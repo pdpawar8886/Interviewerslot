@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Interview Slot System</title>
+
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #343a40;
+            color: #fff;
+            min-height: 100%;
+        }
+
+            .sidebar h5 {
+                padding: 15px;
+                margin: 0;
+                border-bottom: 1px solid #495057;
+            }
+
+            .sidebar a {
+                color: #fff;
+                display: flex;
+                align-items: center;
+                padding: 10px 15px;
+                text-decoration: none;
+            }
+
+                .sidebar a i {
+                    margin-right: 10px;
+                }
+
+                .sidebar a:hover,
+                .sidebar a.active {
+                    background-color: #495057;
+                }
+
+        .content-area {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+            @Html.ActionLink(
+                "Interview Slot",
+                "Index",
+                "Dashboard",
+                null,
+                new { @class = "navbar-brand fw-bold" }
+            )
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h5>Menu</h5>
+
+            @if (Session["UserRole"] != null)
+            {
+                if (Session["UserRole"].ToString() == "Student")
+                {
+
+                    <a href="@Url.Action("Index", "Dashboard")">
+                        <i class="fas fa-user-clock"></i> Dashboard
+                    </a>
+                    <a href="@Url.Action("Index", "Student")">
+                        <i class="fas fa-users"></i> Student List
+                    </a>
+
+                    <a href="@Url.Action("Index", "InterviewBooking")">
+                        <i class="fas fa-calendar-check"></i> Interview Booking
+                    </a>
+
+
+                }
+                else if (Session["UserRole"].ToString() == "Sir")
+                {
+
+                    <a href="@Url.Action("Index", "Dashboard")">
+                        <i class="fas fa-user-clock"></i> Dashboard
+                    </a>
+
+                    <a href="@Url.Action("AddAvailability", "Sir")">
+                        <i class="fas fa-user-clock"></i> Set Availability
+                    </a>
+
+                    <a href="@Url.Action("Index", "Sir")">
+                        <i class="fas fa-user-clock"></i> slot Available
+                    </a>
+
+
+
+
+
+
+                    <a href="@Url.Action("Index", "SirA")">
+                        <i class="fas fa-users"></i> Sir List
+                    </a>
+
+                    <a href="@Url.Action("Index", "Student")">
+                        <i class="fas fa-users"></i> Student List
+                    </a>
+                }
+            }
+        </div>
+
+        <!-- Content -->
+        <div class="content-area">
+            @RenderBody()
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <small>© @DateTime.Now.Year - Interview Slot Management System</small>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

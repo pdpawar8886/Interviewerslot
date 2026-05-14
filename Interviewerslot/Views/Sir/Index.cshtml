@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Interviewerslot.Models.SirAvailability>
+
+<h3 class="mb-3">Sir Slot List</h3>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Sir Name</th>
+            <th>Date</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Sir.SirName</td>
+                <td>@item.AvailableDate.ToString("dd-MM-yyyy")</td>
+                <td>@DateTime.Today.Add(item.FromTime).ToString("hh:mm tt")</td>
+                <td>@DateTime.Today.Add(item.ToTime).ToString("hh:mm tt")</td>
+
+                <!-- Slot Status -->
+                <td>
+                    @if (!item.IsBooked)
+                    {
+                        <a href="@Url.Action("Edit", "Sir", new { id = item.AvailabilityId })"
+                           class="btn btn-sm"
+                           style="background-color:#28a745; color:white;">
+                            Free Slot
+                        </a>
+                    }
+                    else
+                    {
+                        <span style="background-color:red; color:white; padding:4px 8px; border-radius:4px;">
+                            Booked
+                        </span>
+                    }
+                </td>
+
+                <!-- Edit Button (ONLY for Free Slot) -->
+                <td>
+                    @if (!item.IsBooked)
+                    {
+                        <a href="@Url.Action("Edit", "Sir", new { id = item.AvailabilityId })"
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

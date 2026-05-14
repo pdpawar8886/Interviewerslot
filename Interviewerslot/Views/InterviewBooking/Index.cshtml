@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Interviewerslot.Models.InterviewBookingViewModel>
+
+@{
+    ViewBag.Title = "Interview Bookings";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Interview Bookings</h2>
+    <a href="@Url.Action("Create", "InterviewBooking")" class="btn btn-success">
+        + Book Interview
+    </a>
+</div>
+<div class="row mb-3">
+    <div class="col-md-3">
+        <select id="filterColumn" class="form-select">
+            <option value="">-- Select Column --</option>
+            <option value="bookingid-col">Booking ID</option>
+            <option value="student-col">Student</option>
+            <option value="sir-col">Sir</option>
+            <option value="date-col">Date</option>
+            <option value="time-col">Time Slot</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <input type="text"
+               id="filterValue"
+               class="form-control"
+               placeholder="Type to search..."
+               onkeyup="applyFilter()" />
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-bordered table-hover text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Student</th>
+                    <th>Sir</th>
+                    <th>Date</th>
+                    <th>Time Slot</th>
+                    <th>Action</th>   <!-- ✅ NEW -->
+                </tr>
+            </thead>
+
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-muted">
+                            No interview bookings found
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="bookingid-col">@item.BookingId</td>
+                            <td class="student-col">@item.StudentName</td>
+                            <td class="sir-col">@item.SirName</td>
+                            <td class="date-col">@item.Date.ToString("dd-MM-yyyy")</td>
+
+                            <td class="time-col">
+                                @DateTime.Today.Add(item.FromTime).ToString("hh:mm tt")
+                                -
+                                @DateTime.Today.Add(item.ToTime).ToString("hh:mm tt")
+                            </td>
+
+                            <td>
+                                @Html.ActionLink(
+                                    "Edit",
+                                    "Edit",
+                                    "InterviewBooking",
+                                    new { id = item.BookingId },
+                                    new { @class = "btn btn-warning btn-sm" }
+                                )
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<script>
+    function applyFilter() {
+
+        var columnClass = $('#filterColumn').val();
+        var searchText = $('#filterValue').val().toLowerCase();
+
+        // no column selected → show all
+        if (columnClass === "") {
+            $('tbody tr').show();
+            return;
+        }
+
+        $('tbody tr').each(function () {
+
+            var cellText = $(this)
+                .find('.' + columnClass)
+                .text()
+                .toLowerCase();
+
+            if (cellText.includes(searchText)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>

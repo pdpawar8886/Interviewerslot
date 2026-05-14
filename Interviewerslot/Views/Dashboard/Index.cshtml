@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="container mt-4">
+
+    <h2 class="text-center fw-bold mb-4"> Admin Dashboard</h2>
+
+    <!-- 🔹 TOP CARDS -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body bg-primary text-white rounded">
+                    <h6>Total Sirs</h6>
+                    <h2>@ViewBag.TotalSirs</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body bg-success text-white rounded">
+                    <h6>Total Students</h6>
+                    <h2>@ViewBag.TotalStudents</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body bg-warning text-dark rounded">
+                    <h6>Total Interviews</h6>
+                    <h2>@ViewBag.TotalInterviews</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center shadow">
+                <div class="card-body bg-info text-white rounded">
+                    <h6>Today Interviews</h6>
+                    <h2>@ViewBag.TodayInterviews</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 🔹 CHART SECTION -->
+    <div class="row">
+
+        <!-- Bar Chart -->
+        <div class="col-md-6">
+            <div class="card shadow p-3">
+                <h5 class="text-center">📊 Slots Bar Chart</h5>
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-md-6">
+            <div class="card shadow p-3">
+                <h5 class="text-center">🥧 Slots Pie Chart</h5>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- 🔹 Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const booked = @ViewBag.BookedSlots;
+    const available = @ViewBag.AvailableSlots;
+
+    // 📊 BAR CHART
+    new Chart(document.getElementById("barChart"), {
+        type: 'bar',
+        data: {
+            labels: ["Booked Slots", "Available Slots"],
+            datasets: [{
+                label: "Slots Count",
+                data: [booked, available],
+                backgroundColor: ["#dc3545", "#28a745"]
+            }]
+        }
+    });
+
+    // 🥧 PIE CHART
+    new Chart(document.getElementById("pieChart"), {
+        type: 'pie',
+        data: {
+            labels: ["Booked Slots", "Available Slots"],
+            datasets: [{
+                data: [booked, available],
+                backgroundColor: ["#dc3545", "#28a745"]
+            }]
+        }
+    });
+</script>
